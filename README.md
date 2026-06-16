@@ -98,13 +98,7 @@ npm run typecheck
 
 ## Submission Guidelines
 
-Open a PR with your alias-scoped files only:
-
-```bash
-git add app/pages/YOUR_ALIAS app/components/YOUR_ALIAS app/composables/YOUR_ALIAS server/api/YOUR_ALIAS
-git commit -m "feat(onboarding): add display for YOUR_ALIAS"
-git push origin main
-```
+Open a PR with your changes. You should only be modifying/adding files under your alias folders and any shared components/composables if necessary. Any changes to shared code must be justified and reviewed carefully.
 
 In the PR description, summarize:
 
