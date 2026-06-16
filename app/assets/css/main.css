@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'Public Sans', 'Segoe UI', sans-serif;
+
+  --color-green-50: #EFFDF5;
+  --color-green-100: #D9FBE8;
+  --color-green-200: #B3F5D1;
+  --color-green-300: #75EDAE;
+  --color-green-400: #00DC82;
+  --color-green-500: #00C16A;
+  --color-green-600: #00A155;
+  --color-green-700: #007F45;
+  --color-green-800: #016538;
+  --color-green-900: #0A5331;
+  --color-green-950: #052E16;
+}
+
+:root {
+  color-scheme: dark;
+  --display-ink: #f5f7fb;
+  --display-muted: rgba(245, 247, 251, 0.72);
+  --display-surface: rgba(10, 14, 26, 0.74);
+  --display-border: rgba(255, 255, 255, 0.12);
+  --display-gold: #f5c64b;
+  --display-scarlet: #b31b34;
+  --display-navy: #0f1f3a;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--display-ink);
+  background:
+    radial-gradient(circle at top left, rgba(245, 198, 75, 0.16), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(179, 27, 52, 0.16), transparent 26%),
+    linear-gradient(135deg, #07101e 0%, #0b1220 50%, #050a12 100%);
+  font-feature-settings: 'ss01' 1, 'cv02' 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

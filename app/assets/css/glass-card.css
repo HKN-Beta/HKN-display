@@ -1,0 +1,54 @@
+/**
+ * Liquid-glass card — shared base styles for any element using
+ * the `useLiquidGlass` composable.
+ *
+ * Usage:
+ *   <div ref="cardEl" class="rounded-glass-card"> … </div>
+ *
+ * The CSS provides a frosted-glass fallback (CSS blur + saturate).
+ * On mount the composable replaces backdrop-filter with an SVG
+ * displacement-map filter for the full liquid-glass look.
+ *
+ * Components may override individual properties (e.g. border-radius,
+ * flex-direction) in their own <style scoped> blocks — scoped class
+ * selectors (0-1-1) beat this global class (0-1-0).
+ */
+
+/* ── Glass card surface ─────────────────────────────────────── */
+.rounded-glass-card {
+  position: relative;
+  background: transparent;
+  /* CSS fallback — overridden inline by SVG liquid-glass filter on mount */
+  backdrop-filter: blur(4px) saturate(1.2);
+  -webkit-backdrop-filter: blur(4px) saturate(1.2);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Subtle inner rim glow (above backdrop filter) */
+.rounded-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ── Standard widget content wrapper ────────────────────────── */
+.widget-content {
+  position: relative;
+  z-index: 1;
+  width: 96%;
+  height: 96%;
+  padding: 1%;
+}

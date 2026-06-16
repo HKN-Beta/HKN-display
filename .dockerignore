@@ -1,0 +1,12 @@
+.git
+.github
+.nuxt
+.output
+.nitro
+.cache
+node_modules
+dist
+coverage
+*.log
+.DS_Store
+README.md

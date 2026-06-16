@@ -1,0 +1,42 @@
+{
+  "name": "display",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "format": "eslint . --fix",
+    "format:check": "eslint .",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.112",
+    "@iconify-json/simple-icons": "^1.2.86",
+    "@nuxt/image": "^1.7.0",
+    "@nuxt/ui": "^4.8.2",
+    "adm-zip": "^0.5.16",
+    "gtfs-realtime-bindings": "^1.1.1",
+    "nuxt": "^4.4.8",
+    "nuxt-swiper": "^2.0.2",
+    "papaparse": "^5.5.3",
+    "swiper": "^12.2.0",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.16.0",
+    "@types/adm-zip": "^0.5.7",
+    "@types/node": "^24.0.13",
+    "@types/papaparse": "^5.3.16",
+    "eslint": "^10.5.0",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.5"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=11.0.0"
+  },
+  "packageManager": "npm@11.17.0"
+}
