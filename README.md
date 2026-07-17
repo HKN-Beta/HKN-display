@@ -2,20 +2,29 @@
 
 Welcome to the Facilities Committee onboarding project.
 
-This repo is a Nuxt 4 sandbox where each onboardee builds a display page under their own alias, so work can be reviewed and merged without collisions.
+This repo is a Nuxt 4 sandbox where each onboardee builds a display page under
+their own alias, so work can be reviewed and merged without collisions.
 
 ## Runtime Requirements
 
 - Node.js 22 or newer
 - npm 10 or newer
+- Docker 24 or newer (for container testing)
+
+You can install these with the `install.bat` (windows) or `install.sh`
+(macOS/Linux) scripts in the docs folder. See the docs for more details:
+
+- [Windows Dependencies Installation Guide](docs/deps_win.md)
+- [MacOS Dependencies Installation Guide](docs/deps_mac.md)
+- [Linux Dependencies Installation Guide](docs/deps_linux.md)
 
 ## Getting Started
 
 ### 1. Clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/display.git
-cd display
+git clone https://github.com/HKN-Beta/HKN-display.git
+cd HKN-display
 ```
 
 ### 2. Install dependencies
@@ -27,7 +36,7 @@ npm install
 ### 3. Run locally
 
 ```bash
-npm run dev -- -o
+npm run dev
 ```
 
 Default local URL: `http://localhost:3000`
@@ -64,18 +73,23 @@ server/
 
 ## Nuxt 4 Notes (Important)
 
-- Routing is file-system based: `app/pages/<alias>/index.vue` maps to `/<alias>`.
+- Routing is file-system based: `app/pages/<alias>/index.vue` maps to
+  `/<alias>`.
 - Composables in nested alias folders are auto-imported via project config.
-- Components in alias subfolders are auto-registered with directory prefix naming.
-  - Example: `app/components/jorgenel/TimeWidget.vue` is used as `<JorgenelTimeWidget />`.
+- Components in alias subfolders are auto-registered with directory prefix
+  naming.
+  - Example: `app/components/jorgenel/TimeWidget.vue` is used as
+    `<JorgenelTimeWidget />`.
 
 ## Onboarding Minimum Requirements
 
 Each alias display should include at least:
 
 1. A reactive clock (updates every second).
-2. At least one required alias-scoped server API endpoint under `server/api/<alias>/...`, consumed by your page.
-3. Asynchronous data from at least one external/public API (directly or via your alias server API).
+2. At least one required alias-scoped server API endpoint under
+   `server/api/<alias>/...`, consumed by your page.
+3. Asynchronous data from at least one external/public API (directly or via your
+   alias server API).
 4. At least two user-configurable settings.
 5. Modular component architecture (not a monolith).
 6. Lifecycle cleanup (`onUnmounted`) for intervals/listeners.
@@ -98,7 +112,9 @@ npm run typecheck
 
 ## Submission Guidelines
 
-Open a PR with your changes. You should only be modifying/adding files under your alias folders and any shared components/composables if necessary. Any changes to shared code must be justified and reviewed carefully.
+Open a PR with your changes. You should only be modifying/adding files under
+your alias folders and any shared components/composables if necessary. Any
+changes to shared code must be justified and reviewed carefully.
 
 In the PR description, summarize:
 
