@@ -18,6 +18,17 @@ You can install these with the `install.bat` (windows) or `install.sh`
 - [MacOS Dependencies Installation Guide](docs/deps_mac.md)
 - [Linux Dependencies Installation Guide](docs/deps_linux.md)
 
+### Recommened Extensions for VS Code
+
+- Vue (Official) by Vue.js // gives syntax highlighting and intellisense for Vue
+  files
+- Copilot by GitHub // optional, but recommended for code suggestions and
+  autocompletion
+- Docker by Microsoft // optional, but recommended for building and running the
+  container
+- ESLint by Microsoft // integrates ESLint into VS Code for linting and
+  formatting
+
 ## Getting Started
 
 ### 1. Clone
