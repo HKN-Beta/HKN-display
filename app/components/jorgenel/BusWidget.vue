@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { useApiV2 } from '~/composables/jorgenel/useApiV2'
 import { useLiquidGlass } from '~/composables/jorgenel/useLiquidGlass'
 
@@ -37,8 +37,6 @@ const { init: initHeaderGlass, destroy: destroyHeaderGlass } = useLiquidGlass({
 })
 const cardEl = ref<HTMLElement | null>(null)
 const headerEl = ref<HTMLElement | null>(null)
-const rowRefs = ref<(HTMLElement | null)[]>([])
-const rowGlassInstances: ReturnType<typeof useLiquidGlass>[] = []
 
 const routeInfo = ref<ApiEnvelope<RouteInfo[]> | null>(null)
 const tripUpdates = ref<ApiEnvelope<ArrivalSchedule[]> | null>(null)
@@ -93,30 +91,6 @@ const fetchServiceAlerts = async (): Promise<void> => {
   }
 }
 
-function initRowGlasses(): void {
-  rowGlassInstances.forEach(g => g.destroy())
-  rowGlassInstances.length = 0
-  if (!tripUpdates.value?.success) return
-  nextTick(() => {
-    tripUpdates.value!.data.forEach((schedule, i) => {
-      const el = rowRefs.value[i]
-      if (!el) return
-      const color = routeData(schedule.routeId)?.route_color ?? '334455'
-      const glass = useLiquidGlass({
-        frostBlur: 1.5,
-        bezelWidth: 22,
-        maxDisplacement: 40,
-        specularOpacity: 0.35,
-        borderRadius: 20,
-        tintColor: `#${color}`,
-        tintOpacity: 0.65
-      })
-      glass.init(el)
-      rowGlassInstances.push(glass)
-    })
-  })
-}
-
 let refreshInterval: ReturnType<typeof setInterval> | null = null
 
 onMounted(async () => {
@@ -128,7 +102,6 @@ onMounted(async () => {
   nextTick(() => {
     if (cardEl.value) initGlass(cardEl.value)
     if (headerEl.value) initHeaderGlass(headerEl.value)
-    initRowGlasses()
   })
   refreshInterval = setInterval(() => {
     fetchTripUpdates()
@@ -140,8 +113,6 @@ onUnmounted(() => {
   if (refreshInterval) clearInterval(refreshInterval)
   destroyGlass()
   destroyHeaderGlass()
-  rowGlassInstances.forEach(g => g.destroy())
-  rowGlassInstances.length = 0
 })
 </script>
 
@@ -176,9 +147,8 @@ onUnmounted(() => {
 
         <template v-if="tripUpdates?.success">
           <div
-            v-for="(schedule, i) of tripUpdates.data"
+            v-for="schedule of tripUpdates.data"
             :key="schedule.routeId"
-            :ref="(el) => { rowRefs[i] = el as HTMLElement | null }"
             class="bus-time-row bus-route-glass"
             :style="`--route-accent: #${routeData(schedule.routeId)?.route_color ?? '334455'};`"
           >

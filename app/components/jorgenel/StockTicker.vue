@@ -118,6 +118,8 @@ function arrow(change: number): string {
     display: flex;
     width: max-content;
     animation: ticker-scroll 60s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .ticker-content {

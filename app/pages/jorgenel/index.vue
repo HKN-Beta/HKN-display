@@ -175,11 +175,32 @@ if (import.meta.client) {
   onUnmounted(() => clearTimeout(refreshTimer))
 }
 
+// --- Glass Mode setting ---
+const glassMode = ref('auto')
+if (import.meta.client) {
+  try {
+    const savedMode = localStorage.getItem('hkn-display-glass-mode')
+    if (savedMode) glassMode.value = savedMode
+  } catch {
+    // noop
+  }
+}
+
+const setGlassMode = (mode) => {
+  glassMode.value = mode
+  try {
+    localStorage.setItem('hkn-display-glass-mode', mode)
+    window.location.reload()
+  } catch {
+    // noop
+  }
+}
+
 // Alt+W to toggle the settings modal
 defineShortcuts({
   alt_w: () => {
     settingsOpen.value = !settingsOpen.value
-    console.log(`[Display] Toggled background video settings modal: ${settingsOpen.value ? 'OPEN' : 'CLOSED'}`)
+    console.log(`[Display] Toggled settings modal: ${settingsOpen.value ? 'OPEN' : 'CLOSED'}`)
     if (settingsOpen.value) urlError.value = ''
   }
 })
@@ -197,16 +218,13 @@ defineShortcuts({
       <JorgenelBusWidget />
       <JorgenelMultiWidget />
       <JorgenelWeatherWidget />
-      <div class="sysload-sidebar">
-        <JorgenelSysLoadWidget style="flex: 1;" />
-      </div>
     </div>
 
-    <!-- Background video settings modal (Alt+W) -->
+    <!-- Display settings modal (Alt+W) -->
     <UModal
       v-model:open="settingsOpen"
-      title="Background Video"
-      description="Change the YouTube video used as the display background."
+      title="Display Settings"
+      description="Change background video and performance / liquid glass settings."
     >
       <template #body>
         <div class="flex flex-col gap-4">
@@ -230,6 +248,36 @@ defineShortcuts({
           >
             {{ urlError }}
           </p>
+
+          <div class="border-t border-gray-200 dark:border-gray-800 pt-3">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Liquid Glass Mode</label>
+            <div class="flex gap-2">
+              <UButton
+                label="Auto Detect"
+                :color="glassMode === 'auto' ? 'primary' : 'gray'"
+                variant="solid"
+                size="xs"
+                @click="setGlassMode('auto')"
+              />
+              <UButton
+                label="Full SVG Refraction"
+                :color="glassMode === 'svg' ? 'primary' : 'gray'"
+                variant="solid"
+                size="xs"
+                @click="setGlassMode('svg')"
+              />
+              <UButton
+                label="CSS Glass (Performance)"
+                :color="glassMode === 'css' ? 'primary' : 'gray'"
+                variant="solid"
+                size="xs"
+                @click="setGlassMode('css')"
+              />
+            </div>
+            <p class="text-xs text-gray-500 mt-1">
+              CSS Glass uses hardware-accelerated GPU compositing for ~0% CPU usage on lower-end hardware.
+            </p>
+          </div>
         </div>
       </template>
 
@@ -268,9 +316,9 @@ defineShortcuts({
   max-height: 100dvh;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 6fr 4fr 10rem;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr 1fr;
-  gap: 1svh 2svh;
+  gap: 1.5svh 2svh;
   padding: 1svh 2svh 2svh;
 }
 
@@ -279,13 +327,5 @@ defineShortcuts({
   grid-row: 1;
   min-height: 0;
   margin: -0.5svh -0.5svh 0;
-}
-
-.sysload-sidebar {
-  grid-column: 3;
-  grid-row: 2 / -1;
-  display: flex;
-  min-width: 0;
-  overflow: hidden;
 }
 </style>

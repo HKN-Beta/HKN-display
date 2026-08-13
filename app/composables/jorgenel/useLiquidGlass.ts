@@ -347,6 +347,24 @@ function supportsBackdropSvgFilter(): boolean {
 // so IDs must never collide across component instances.
 let _instanceCounter = 0
 
+function determineGlassMode(): 'svg' | 'css' {
+  if (typeof window === 'undefined') return 'css'
+  try {
+    const userPref = localStorage.getItem('hkn-display-glass-mode')
+    if (userPref === 'css') return 'css'
+    if (userPref === 'svg') return 'svg'
+  } catch {
+    // noop
+  }
+  // Auto-detect mode: check hardware concurrency (CPU cores)
+  const cores = navigator.hardwareConcurrency ?? 2
+  if (cores < 4) {
+    console.info(`[LiquidGlass] Auto mode detected constrained hardware (${cores} cores) — using CSS Glass mode`)
+    return 'css'
+  }
+  return 'svg'
+}
+
 export function useLiquidGlass(config: Partial<LiquidGlassConfig> = {}) {
   const opts: LiquidGlassConfig = { ...DEFAULTS, ...config }
   const _instanceId = _instanceCounter++
@@ -388,7 +406,7 @@ export function useLiquidGlass(config: Partial<LiquidGlassConfig> = {}) {
 
   function scheduleRebuild(): void {
     if (timer) clearTimeout(timer)
-    timer = setTimeout(rebuild, 250)
+    timer = setTimeout(rebuild, 400)
   }
 
   /**
@@ -398,8 +416,17 @@ export function useLiquidGlass(config: Partial<LiquidGlassConfig> = {}) {
    *                 '.rounded-glass-card' for backwards compatibility.
    */
   function init(target: HTMLElement | string = '.rounded-glass-card'): void {
-    if (!supportsBackdropSvgFilter()) {
-      console.info('[LiquidGlass] SVG backdrop-filter not supported — using CSS fallback')
+    const mode = determineGlassMode()
+    if (mode === 'css' || !supportsBackdropSvgFilter()) {
+      console.info('[LiquidGlass] Using GPU-accelerated CSS Glass mode')
+      const elements: HTMLElement[] = typeof target === 'string'
+        ? Array.from(document.querySelectorAll<HTMLElement>(target))
+        : [target]
+      elements.forEach((el) => {
+        el.style.backdropFilter = `blur(12px) saturate(1.3)`
+        const style = el.style as CSSStyleDeclaration & { webkitBackdropFilter?: string }
+        style.webkitBackdropFilter = `blur(12px) saturate(1.3)`
+      })
       return
     }
 

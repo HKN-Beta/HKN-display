@@ -66,8 +66,15 @@ const parseCsvWithHeader = (
   })
 }
 
+let routesCache: { data: Array<Record<string, string>>, ts: number } | null = null
+const ROUTES_CACHE_TTL = 60 * 60 * 1000 // 1 hour
+
 export default defineEventHandler(async (_event) => {
   try {
+    if (routesCache && Date.now() - routesCache.ts < ROUTES_CACHE_TTL) {
+      return createSuccessResponse(routesCache.data)
+    }
+
     // Fetch the GTFS ZIP file
     const response = await fetch(GTFS_URL)
 
@@ -96,9 +103,14 @@ export default defineEventHandler(async (_event) => {
     const content = zip.readAsText(routesEntry)
     const parsedData = parseCsvWithHeader(content)
 
+    routesCache = { data: parsedData, ts: Date.now() }
     return createSuccessResponse(parsedData)
   } catch (error: unknown) {
     console.error('Error fetching CityBus routes:', error)
+
+    if (routesCache) {
+      return createSuccessResponse(routesCache.data)
+    }
 
     return createErrorResponse(
       'FETCH_ERROR',

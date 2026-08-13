@@ -65,9 +65,11 @@ onMounted(async () => {
     if (cardEl.value) initGlass(cardEl.value)
   })
   refreshInterval = setInterval(() => {
-    time.value = fmt({ timeStyle: 'short' })
-    date.value = fmt({ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-  }, 500)
+    const newTime = fmt({ timeStyle: 'short' })
+    const newDate = fmt({ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    if (time.value !== newTime) time.value = newTime
+    if (date.value !== newDate) date.value = newDate
+  }, 1000)
   wxInterval = setInterval(fetchWeather, 1000 * 60 * 5)
 })
 
