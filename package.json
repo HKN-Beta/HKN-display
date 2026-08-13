@@ -10,7 +10,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "deploy": "./deploy.sh"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.112",
@@ -35,7 +36,7 @@
     "vue-tsc": "^3.3.5"
   },
   "engines": {
-    "node": ">=22.0.0",
+    "node": ">=24.0.0",
     "npm": ">=11.0.0"
   },
   "packageManager": "npm@11.17.0"

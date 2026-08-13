@@ -23,11 +23,6 @@ export default defineNuxtConfig({
     '/jorgenel': { ssr: false }
   },
 
-  nitro: {
-    externals: {
-      trace: false
-    }
-  },
 
   compatibilityDate: '2025-01-15',
 

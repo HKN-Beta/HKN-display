@@ -173,3 +173,25 @@ If your display fails in container but works locally, check:
 - Hardcoded `localhost` API calls in client code.
 - Missing runtime env vars.
 - External API/network restrictions from container environment.
+
+## Deployment
+
+To build and tag the Docker image for release and push to Docker Hub (`purduehkn/display`), run:
+
+```bash
+./deploy.sh
+# or via npm:
+npm run deploy
+```
+
+On Windows PowerShell:
+
+```powershell
+.\deploy.ps1
+```
+
+This will automatically:
+1. Extract the condensed git commit hash (`git rev-parse --short HEAD`).
+2. Build the Docker image with two tags: `purduehkn/display:<commit-hash>` and `purduehkn/display:latest`.
+3. Push both tags to Docker Hub (`purduehkn/display`).
+
