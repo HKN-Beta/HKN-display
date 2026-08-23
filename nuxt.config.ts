@@ -20,9 +20,9 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/default': { prerender: true },
-    '/jorgenel': { ssr: false }
+    '/jorgenel': { ssr: false },
+    '/rwurtz': { ssr: false }
   },
-
 
   compatibilityDate: '2025-01-15',
 
