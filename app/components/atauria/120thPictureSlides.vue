@@ -5,6 +5,58 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import { useApiV2 } from '~/composables/jorgenel/useApiV2'
 import { useLiquidGlass } from '~/composables/jorgenel/useLiquidGlass'
+
+interface Announcement {
+  title: string
+  body: string
+  image: string
+}
+
+const { get } = useApiV2()
+const { init: initGlass, destroy: destroyGlass } = useLiquidGlass()
+const { init: initTitleGlass, destroy: destroyTitleGlass } = useLiquidGlass({
+  frostBlur: 0.8,
+  bezelWidth: 20,
+  maxDisplacement: 30,
+  specularOpacity: 0.28,
+  borderRadius: 40,
+  tintColor: '#BA0C2F',
+  tintOpacity: 0.35
+})
+const cardEl = ref<HTMLElement | null>(null)
+const titleEl = ref<HTMLElement | null>(null)
+
+const announcements = ref<Announcement[]>([])
+const loading = ref(false)
+
+const fetchAnnouncements = async (): Promise<void> => {
+  loading.value = announcements.value.length === 0
+  const response = await get('/announcements')
+  loading.value = false
+
+  if (response.success) {
+    announcements.value = response.data as Announcement[]
+  } else if (response.error) {
+    console.error('Announcements API error:', response.error)
+  }
+}
+
+let refreshInterval: ReturnType<typeof setInterval> | null = null
+
+onMounted(async () => {
+  await fetchAnnouncements()
+  nextTick(() => {
+    if (cardEl.value) initGlass(cardEl.value)
+    if (titleEl.value) initTitleGlass(titleEl.value)
+  })
+  refreshInterval = setInterval(fetchAnnouncements, 1000 * 60 * 30) // Refresh every 30 minutes
+})
+
+onUnmounted(() => {
+  if (refreshInterval) clearInterval(refreshInterval)
+  destroyGlass()
+  destroyTitleGlass()
+})
 </script>
 
 <template>

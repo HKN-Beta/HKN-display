@@ -1,22 +1,37 @@
 <script setup lang="ts">
-import { useApiV2 } from '~/composables/jorgenel/useApiV2'
 import { useLiquidGlass } from '~/composables/jorgenel/useLiquidGlass'
+
+const cardEl = ref<HTMLElement | null>(null)
+const { init: initGlass, destroy: destroyGlass } = useLiquidGlass()
+
+onMounted(() => {
+  nextTick(() => {
+    if (cardEl.value) initGlass(cardEl.value)
+  })
+})
+
+onUnmounted(() => {
+  destroyGlass()
+})
 </script>
 
 <template>
-    <div ref="cardEl" class="rounded-glass-card">
-        <div class="widget-content">
-            <div class="tw-header tw-text">
-            <NuxtImg
-                src="HKN120thSharky.gif"
-                alt="HKN 120th Anniversary"
-                class="gif"
-            />
-            <!-- <div class="tw-header tw-text"> -->
-            <span>Happy 120th Birthday to HKN Beta Chapter!</span>
-            </div>
-        </div>
+  <div
+    ref="cardEl"
+    class="rounded-glass-card"
+  >
+    <div class="widget-content">
+      <div class="tw-header tw-text">
+        <NuxtImg
+          src="HKN120thSharky.gif"
+          alt="HKN 120th Anniversary"
+          class="gif"
+        />
+        <!-- <div class="tw-header tw-text"> -->
+        <span>Happy 120th Birthday to HKN Beta Chapter!</span>
+      </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -47,5 +62,4 @@ import { useLiquidGlass } from '~/composables/jorgenel/useLiquidGlass'
     position: relative;
     z-index: 1;
 }
-
 </style>

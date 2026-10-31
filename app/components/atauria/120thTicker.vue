@@ -1,6 +1,22 @@
+<script setup lang="ts">
+import { useLiquidGlass } from '~/composables/jorgenel/useLiquidGlass'
+
+const cardEl = ref<HTMLElement | null>(null)
+const { init: initGlass, destroy: destroyGlass } = useLiquidGlass()
+
+onMounted(() => {
+  nextTick(() => {
+    if (cardEl.value) initGlass(cardEl.value)
+  })
+})
+
+onUnmounted(() => {
+  destroyGlass()
+})
+</script>
+
 <template>
   <div
-    v-if="loaded && quotes.length"
     ref="cardEl"
     class="rounded-glass-card ticker-bar"
   >

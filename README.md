@@ -7,8 +7,8 @@ their own alias, so work can be reviewed and merged without collisions.
 
 ## Runtime Requirements
 
-- Node.js 22 or newer
-- npm 10 or newer
+- Node.js 26.12.1 or newer
+- npm 12 or newer
 - Docker 24 or newer (for container testing)
 
 You can install these with the `install.bat` (windows) or `install.sh`
@@ -174,24 +174,33 @@ If your display fails in container but works locally, check:
 - Missing runtime env vars.
 - External API/network restrictions from container environment.
 
-## Deployment
+## Deployment & Scripts
 
-To build and tag the Docker image for release and push to Docker Hub (`purduehkn/display`), run:
+The repository follows HKN platform standards with automated release, security auditing, and deployment scripts:
 
 ```bash
-./deploy.sh
-# or via npm:
+# Run security audits (npm dependency audit and Docker Scout)
+npm run audit
+
+# Run local Docker container
+npm run docker
+
+# Deploy (typecheck, lint, audit, SemVer bump, Docker build & scout, push, k8s restart)
 npm run deploy
+
+# Deploy without cache
+npm run deploy:no-cache
+
+# Build and verify locally without pushing to Docker Hub or restarting k8s
+npm run deploy:no-push
+
+# Trigger remote Kubernetes rollout restart on HKN-NAS
+npm run restart
 ```
 
 On Windows PowerShell:
 
 ```powershell
 .\deploy.ps1
+# Supports flags: -Version <x.y.z>, -Bump [patch|minor|major], -NoPush, -NoAudit, -NoScout, -NoRestart, -NoCache, -RestartOnly
 ```
-
-This will automatically:
-1. Extract the condensed git commit hash (`git rev-parse --short HEAD`).
-2. Build the Docker image with two tags: `purduehkn/display:<commit-hash>` and `purduehkn/display:latest`.
-3. Push both tags to Docker Hub (`purduehkn/display`).
-
